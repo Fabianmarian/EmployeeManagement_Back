@@ -73,4 +73,20 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/deleteRoleById/{id}")
+    public void deleteRoleById(@PathVariable int id){
+        this.userService.deleteRoleById(id);
+    }
+
+    @PostMapping("/updateRoleName/{id}")
+    public Role updateRoleName(@PathVariable int id, @RequestBody Role name){
+        return this.userService.updateRoleName(id, name);
+    }
+
+    @PostMapping("/updateUser/{id}/{roleList}")
+    public User updateUser(@PathVariable int id,@PathVariable List<Role> roleList, @RequestBody User user){
+        return this.userService.updateUser(id, roleList, user);
+    }
+
+
 }
