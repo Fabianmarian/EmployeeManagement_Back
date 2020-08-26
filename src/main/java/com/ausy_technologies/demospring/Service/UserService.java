@@ -84,6 +84,26 @@ public class UserService {
     }
 
 
+    public Role updateRoleName(int id, Role name){
+        Role role = this.roleRepository.findById(id).get();
+        int flag=0;
+        List<Role> roles = findAllRoles();
+        for(Role role1:roles){
+            if (role1.getName().equals(name.getName())) {
+                flag = 1;
+                break;
+            }
+        }
+        if(flag==0){
+            role.setName(name.getName());
+            roleRepository.save(role);
+        }else{
+            throw new RuntimeException("This name it's already assigned to a role");
+        }
+        return role;
+    }
+
+
     public void deleteUserById(int id)
     {
          this.userRepository.deleteById(id);
