@@ -18,8 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-
     @PostMapping("/addRole")
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
 
@@ -29,8 +27,6 @@ public class UserController {
         httpHeaders.add("Response", "addedNewRole");
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(roleAdded);
     }
-
-
 
 
     @PostMapping("/addUser")
@@ -67,7 +63,9 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response", "action-completed");
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(role);
+
     }
+
 
     @GetMapping("/findAllRoles")
     public ResponseEntity<List<Role>> findAllRoles()
@@ -108,11 +106,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(role);
     }
 
+    @PutMapping("/updateRoleName2/{id}")
+    public Role updateRoleName2(@PathVariable int id, @RequestBody Role name){
+        return this.userService.updateRoleName(id, name);
+    }
+
     @PutMapping("/updateUser/{id}/{roleList}")
     public ResponseEntity<User> updateUser(@PathVariable int id,@PathVariable List<Role> roleList, @RequestBody User user){
         User userUpdated = this.userService.updateUser(id, roleList, user);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Response", "used-updated");
+        httpHeaders.add("Response", "user-updated");
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(userUpdated);
 
     }
