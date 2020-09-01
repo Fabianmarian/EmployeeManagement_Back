@@ -2,6 +2,7 @@ package com.ausy_technologies.demospring.Exception;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> typeMismatchException( MethodArgumentTypeMismatchException ex,HttpServletResponse httpServletResponse){
         String error = "Ati introdus un tip de date invalid";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    protected ResponseEntity<Object> noResultsException(EmptyResultDataAccessException ex,HttpServletResponse httpServletResponse){
+        String error = "ID-ul introdus nu exista";
+        return buildResponseEntity(new ApiError(NOT_FOUND, error, ex));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

@@ -2,6 +2,7 @@ package com.ausy_technologies.demospring.Controller;
 
 import com.ausy_technologies.demospring.Model.DAO.Role;
 import com.ausy_technologies.demospring.Model.DAO.User;
+import com.ausy_technologies.demospring.Model.DTO.UserDto;
 import com.ausy_technologies.demospring.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +21,6 @@ public class UserController {
 
     @PostMapping("/addRole")
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
-
-
         Role roleAdded = this.userService.saveRole(role);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response", "addedNewRole");
@@ -74,6 +73,22 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response", "action-completed");
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(roles);
+    }
+
+    @GetMapping("/findUserDtoById/{id}")
+    public ResponseEntity<UserDto> findUserDtoById(@PathVariable int id){
+        UserDto userDto = this.userService.findUserDtoById(id);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Response", "action-completed");
+        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(userDto);
+    }
+
+    @GetMapping("/findAllUsersDto")
+    public ResponseEntity<List<UserDto>> findAllUsersDto(){
+        List<UserDto> userDtoList = this.userService.findAllUsersDto();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Response", "action-completed");
+        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(userDtoList);
     }
 
 

@@ -2,11 +2,14 @@ package com.ausy_technologies.demospring.Service;
 
 import com.ausy_technologies.demospring.Model.DAO.Role;
 import com.ausy_technologies.demospring.Model.DAO.User;
+import com.ausy_technologies.demospring.Model.DTO.UserDto;
 import com.ausy_technologies.demospring.Repository.RoleRepository;
 import com.ausy_technologies.demospring.Repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 @Service
@@ -49,7 +52,6 @@ public class UserService {
            throw new RuntimeException("Role not found");
        }
 
-
     }
 
 
@@ -66,6 +68,37 @@ public class UserService {
 
     }
 
+
+    public UserDto findUserDtoById(int id){
+        User user = findUserById(id);
+        ModelMapper modelMapper = new ModelMapper();
+        List<Role> roleList = user.getRoleList();
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        List<String> userDtoRoleList = new ArrayList<>();
+        for (Role role : roleList) {
+            userDtoRoleList.add(role.getName());
+        }
+        userDto.setRoleList(userDtoRoleList);
+        return userDto;
+    }
+
+    public List<UserDto> findAllUsersDto(){
+        List<User> userList = findAllUsers();
+        ModelMapper modelMapper = new ModelMapper();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(int i=0;i<userList.size();i++){
+            List<Role> roleList = userList.get(i).getRoleList();
+            List<String> userDtoRoleList = new ArrayList<>();
+            UserDto userDto = modelMapper.map(userList.get(i), UserDto.class);
+            for(Role role: roleList){
+                userDtoRoleList.add(role.getName());
+            }
+            userDto.setRoleList(userDtoRoleList);
+            userDtoList.add(userDto);
+        }
+        return userDtoList;
+    }
+
     public List<Role> findAllRoles()
     {
         return this.roleRepository.findAll();
@@ -75,6 +108,10 @@ public class UserService {
     public List<User> findAllUsers()
     {
         return this.userRepository.findAll();
+    }
+
+    public User findUserById(int id){
+        return this.userRepository.findById(id);
     }
 
 
